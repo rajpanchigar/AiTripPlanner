@@ -1,24 +1,27 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import { CreateTripContext } from './../context/createTripContext.jsx';
+import { useState } from "react";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+export default function RootLayout(){
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+    useFonts({
+        'outfit-black':require("../assets/fonts/Lexend-Black.ttf"),
+        'outfit-bold':require("../assets/fonts/Lexend-Bold.ttf"),
+        'outfit-extrabold':require("../assets/fonts/Lexend-ExtraBold.ttf"),
+        'outfit-light':require("../assets/fonts/Lexend-Light.ttf"),
+        'outfit-medium':require("../assets/fonts/Lexend-Medium.ttf"),
+        'outfit-regular':require("../assets/fonts/Lexend-Regular.ttf"),
+        'outfit-semibold':require("../assets/fonts/Lexend-SemiBold.ttf"),
+        'outfit-thin':require("../assets/fonts/Lexend-Thin.ttf"),
+    })
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    const [tripData, setTripData] = useState([]);
+    return(
+        <CreateTripContext.Provider value={{ tripData, setTripData }}>
+        <Stack screenOptions={{ headerShown : false}}>
+            <Stack.Screen name="index"/>
+        </Stack>
+        </CreateTripContext.Provider>
+    )
 }
